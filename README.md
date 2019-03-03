@@ -33,17 +33,17 @@ gradle clean; gradle build fatJar
 ## Run Examples
 1. ) Run debit only transactions with 2 threads (this will also generate some fraud flagged transactions)
 ```
-java -jar build/libs/fintech-generator-all-1.0-SNAPSHOT.jar 2 debit
+java -jar build/libs/sample-data-generator-all-1.0-SNAPSHOT.jar 2 debit
 ```
 2.) Run credit only transactions with 10 threads (this will also generate some fraud flagged transactions)
 ```
-java -jar build/libs/fintech-generator-all-1.0-SNAPSHOT.jar 10 credit
+java -jar build/libs/sample-data-generator-all-1.0-SNAPSHOT.jar 10 credit
 ```
 3.) Run dda account generation with 5 threads 
 ```
-java -jar build/libs/fintech-generator-all-1.0-SNAPSHOT.jar 5 dda
+java -jar build/libs/sample-data-generator-all-1.0-SNAPSHOT.jar 5 dda
 ```
 4.) Run fraud-only account generation with 5 threads (will run both debit and credit fraud)
 ```
-java -jar build/libs/fintech-generator-all-1.0-SNAPSHOT.jar 3 fraud
+java -jar build/libs/sample-data-generator-all-1.0-SNAPSHOT.jar 3 fraud
 ``` 
