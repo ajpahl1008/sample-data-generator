@@ -47,3 +47,13 @@ java -jar build/libs/sample-data-generator-all-1.0-SNAPSHOT.jar 5 dda
 ```
 java -jar build/libs/sample-data-generator-all-1.0-SNAPSHOT.jar 3 fraud
 ``` 
+5.) Run an IoT simulation with a Locomotive context (Geo)
+```
+java -jar build/libs/sample-data-generator-all-1.0-SNAPSHOT.jar 1 choochoo
+``` 
+6.) Run Mortgage origination data
+```
+java -jar build/libs/sample-data-generator-all-1.0-SNAPSHOT.jar 3 mortgage
+``` 
+
+
