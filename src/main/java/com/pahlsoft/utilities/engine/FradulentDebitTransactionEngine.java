@@ -89,7 +89,7 @@ public class FradulentDebitTransactionEngine implements TransactionEngine {
             boolean engineRun = true;
             while(engineRun) {
                 try {
-                    indexRequest = new IndexRequest("fintech-debit", "doc").source(FraudulentTransactionGenerator.buildTransaction());
+                    indexRequest = new IndexRequest("fintech-debit","_doc").source(FraudulentTransactionGenerator.buildTransaction());
                     client.index(indexRequest, RequestOptions.DEFAULT);
                     log.debug("|FR-DB|");
                 } catch (Exception ioe) {

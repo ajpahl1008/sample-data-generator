@@ -89,7 +89,7 @@ public class FradulentCreditTransactionEngine implements TransactionEngine {
             boolean engineRun = true;
             while(engineRun) {
                 try {
-                    indexRequest = new IndexRequest("fintech-credit", "doc").source(FraudulentTransactionGenerator.buildTransaction());
+                    indexRequest = new IndexRequest("fintech-credit","_doc").source(FraudulentTransactionGenerator.buildTransaction());
                     client.index(indexRequest, RequestOptions.DEFAULT);
                     log.debug("|FR-CR|");
                 } catch (Exception ioe) {

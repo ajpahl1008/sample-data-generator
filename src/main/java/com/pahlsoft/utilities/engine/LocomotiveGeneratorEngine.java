@@ -89,7 +89,7 @@ public class LocomotiveGeneratorEngine implements LocomotiveEngine {
             boolean engineRun = true;
             while(engineRun) {
                 try {
-                    indexRequest = new IndexRequest("locomotive-events", "doc").source(LocomotiveGenerator.buildLocomotive());
+                    indexRequest = new IndexRequest("locomotive-events","_doc").source(LocomotiveGenerator.buildLocomotive());
                     client.index(indexRequest, RequestOptions.DEFAULT);
                     log.debug("|TRAIN-DATA|");
                 } catch (Exception ioe) {

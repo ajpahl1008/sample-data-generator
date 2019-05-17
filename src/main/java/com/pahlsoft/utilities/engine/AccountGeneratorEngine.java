@@ -88,7 +88,7 @@ public class AccountGeneratorEngine implements AccountEngine {
             boolean engineRun = true;
             while(engineRun) {
                 try {
-                    indexRequest = new IndexRequest("dda-accounts", "doc").source(AccountGenerator.buildAccount());
+                    indexRequest = new IndexRequest("dda-accounts","_doc").source(AccountGenerator.buildAccount());
                     client.index(indexRequest, RequestOptions.DEFAULT);
                     log.debug("|DDA|");
                 } catch (Exception ioe) {

@@ -1,1 +1,1 @@
-java -jar build/libs/fintech-generator-all-1.0-SNAPSHOT.jar 8 both 
+java -jar build/libs/sample-data-generator-all-1.0-SNAPSHOT.jar 1 mortgage

@@ -3,6 +3,7 @@ package com.pahlsoft.utilities.runner;
 import com.pahlsoft.utilities.engine.*;
 import com.pahlsoft.utilities.threader.AccountGeneratorEngineThreader;
 import com.pahlsoft.utilities.threader.LocomotiveGeneratorEngineThreader;
+import com.pahlsoft.utilities.threader.MortgageGeneratorEngineThreader;
 import com.pahlsoft.utilities.threader.TransactionEngineThreader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +40,9 @@ public class EngineRunner {
                 case "choochoo":
                     LocomotiveGeneratorEngineThreader.runEngine(Integer.parseInt(args[0]), new LocomotiveGeneratorEngine());
                     break;
+                case "mortgage":
+                    MortgageGeneratorEngineThreader.runEngine(Integer.parseInt(args[0]), new MortgageGeneratorEngine());
+                    break;
                 default:
                     break;
             }
@@ -52,7 +56,7 @@ public class EngineRunner {
 
     private static void validateArguments(String[] args) {
         if (args.length !=2 ) {
-            log.error("Error - Improper Usage, try: fintech-generator-all*.jar [number_of_threads] [fraud|debit|debit|both|dda] ");
+            log.error("Error - Improper Usage, try: sample-data-generator-all*.jar [number_of_threads] [fraud|debit|debit|both|dda|choochoo|mortgage] ");
             System.exit(1);
         }
     }

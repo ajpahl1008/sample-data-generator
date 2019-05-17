@@ -94,7 +94,7 @@ public class CreditCardTransactionEngine implements TransactionEngine {
             boolean engineRun = true;
             while(engineRun) {
                 try {
-                    indexRequest = new IndexRequest("fintech-credit", "doc").source(TransactionGenerator.buildTransaction());
+                    indexRequest = new IndexRequest("fintech-credit","_doc").source(TransactionGenerator.buildTransaction());
                     client.index(indexRequest, RequestOptions.DEFAULT);
                     log.debug("|CR|");
                 } catch (Exception ioe) {

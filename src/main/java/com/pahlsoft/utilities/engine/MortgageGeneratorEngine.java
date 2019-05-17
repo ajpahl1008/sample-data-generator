@@ -1,7 +1,7 @@
 package com.pahlsoft.utilities.engine;
 
-import com.pahlsoft.utilities.generator.TransactionGenerator;
-import com.pahlsoft.utilities.interfaces.TransactionEngine;
+import com.pahlsoft.utilities.generator.MortgageGenerator;
+import com.pahlsoft.utilities.interfaces.MortgageEngine;
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -27,14 +27,12 @@ import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
 import java.text.MessageFormat;
 import java.util.Properties;
 
+public class MortgageGeneratorEngine implements MortgageEngine {
 
-public class DebitCardTransactionEngine implements TransactionEngine {
-
-    static Logger log = LoggerFactory.getLogger(DebitCardTransactionEngine.class);
+    static Logger log = LoggerFactory.getLogger(AccountGeneratorEngine.class);
 
     private static final String PROPERTY_ES_HOST = "elasticsearch.host";
     private static final String PROPERTY_ES_PORT = "elasticsearch.port";
@@ -44,12 +42,12 @@ public class DebitCardTransactionEngine implements TransactionEngine {
     private static final String PROPERTY_KEYSTORE_LOC = "keystore.location";
     private static final String PROPERTY_KEYSTORE_PW = "keystore.password";
 
+    private Properties properties = new Properties();
+
     KeyStore truststore = null;
     SSLContextBuilder sslBuilder = null;
 
-    private Properties properties = new Properties();
-
-    public DebitCardTransactionEngine() throws IOException {
+    public MortgageGeneratorEngine() throws IOException {
         this.loadProperties();
     }
 
@@ -57,7 +55,7 @@ public class DebitCardTransactionEngine implements TransactionEngine {
         Thread currentThread = Thread.currentThread();
         ClassLoader contextClassLoader = currentThread.getContextClassLoader();
         InputStream propertiesStream = contextClassLoader.getResourceAsStream("config.properties");
-        if (propertiesStream != null) {
+        if(propertiesStream != null) {
             this.properties.load(propertiesStream);
         } else {
             log.error("No Properties Found");
@@ -66,13 +64,14 @@ public class DebitCardTransactionEngine implements TransactionEngine {
 
     @Override
     public void run() {
+
         if (log.isInfoEnabled()) {
-            log.info(MessageFormat.format("Starting Debit Card Transaction Engine {0}",Thread.currentThread().getId()));
+            log.info(MessageFormat.format("Starting Mortgage Generation Engine {0}", Thread.currentThread().getId()));
         }
 
         final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
         credentialsProvider.setCredentials(AuthScope.ANY,
-                new UsernamePasswordCredentials(this.properties.getProperty(PROPERTY_ES_USER), this.properties.getProperty(PROPERTY_ES_PW)));
+                new UsernamePasswordCredentials(this.properties.getProperty(PROPERTY_ES_USER),this.properties.getProperty(PROPERTY_ES_PW)));
 
         RestHighLevelClient client;
         IndexRequest indexRequest;
@@ -86,26 +85,18 @@ public class DebitCardTransactionEngine implements TransactionEngine {
             } else {
                 client = getClient(credentialsProvider);
             }
+
             boolean engineRun = true;
-            while (engineRun) {
+            while(engineRun) {
                 try {
-                    indexRequest = new IndexRequest("fintech-debit","_doc").source(TransactionGenerator.buildTransaction());
+                    indexRequest = new IndexRequest("mortgage-data", "_doc").source(MortgageGenerator.buildAccount());
                     client.index(indexRequest, RequestOptions.DEFAULT);
-                    log.debug("|DB|");
+                    log.debug("|MORTGAGE|");
+                    Thread.sleep(15000);
                 } catch (Exception ioe) {
                     engineRun = false;
                     log.warn(ioe.getMessage());
                 }
-
-                try {
-                    Thread.sleep(randomSleepTime(1000, 5000));
-                } catch (InterruptedException e) {
-                    engineRun = false;
-                    log.warn("Interrupted",e);
-                    // Restore interrupted state...
-                    Thread.currentThread().interrupt();
-                }
-
             }
         } catch (NoSuchAlgorithmException | KeyManagementException e) {
             log.warn(e.getMessage());
@@ -120,16 +111,14 @@ public class DebitCardTransactionEngine implements TransactionEngine {
         }
         try (InputStream is = Files.newInputStream(Paths.get(this.properties.getProperty(PROPERTY_KEYSTORE_LOC)))) {
             truststore.load(is, this.properties.getProperty(PROPERTY_KEYSTORE_PW).toCharArray());
-        } catch (IOException | CertificateException| NoSuchAlgorithmException e) {
+        } catch (Exception e) {
             log.warn(e.getMessage());
         }
 
         try {
             sslBuilder = SSLContexts.custom()
                     .loadTrustMaterial(truststore, null);
-        } catch (NoSuchAlgorithmException e) {
-            log.warn(e.getMessage());
-        } catch (KeyStoreException e) {
+        } catch (NoSuchAlgorithmException | KeyStoreException e) {
             log.warn(e.getMessage());
         }
         return sslBuilder;
@@ -157,13 +146,6 @@ public class DebitCardTransactionEngine implements TransactionEngine {
                                 return httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider);
                             }
                         }));
-    }
-
-
-    private static long randomSleepTime(int min, int max) {
-        double delay_time = Math.random() * (max - min) + min;
-        return (long) delay_time;
 
     }
-
 }
