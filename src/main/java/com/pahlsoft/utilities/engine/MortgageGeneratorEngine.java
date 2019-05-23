@@ -92,7 +92,7 @@ public class MortgageGeneratorEngine implements MortgageEngine {
                     indexRequest = new IndexRequest("mortgage-data", "_doc").source(MortgageGenerator.buildAccount());
                     client.index(indexRequest, RequestOptions.DEFAULT);
                     log.debug("|MORTGAGE|");
-                    Thread.sleep(15000);
+                    //Thread.sleep(15000);
                 } catch (Exception ioe) {
                     engineRun = false;
                     log.warn(ioe.getMessage());

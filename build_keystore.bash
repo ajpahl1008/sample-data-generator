@@ -23,5 +23,5 @@ keytool -genkey -alias elastic_servers \
     -dname "CN=AJ Pahl, OU=PahlSoft, O=Pahl L=Atlanta, S=Georgia, C=US" \
     -storepass ${PASSWORD} -keypass ${PASSWORD}
 
-keytool -import -noprompt -trustcacerts -alias pahl_cloud -file es_cloud.cert \
+keytool -import -noprompt -trustcacerts -alias elastic_$$ -file es_cloud.cert \
     -keystore ./keystore.jks -storepass ${PASSWORD}
